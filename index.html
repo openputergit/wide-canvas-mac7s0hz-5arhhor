@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+        .query-result {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <nav class="bg-blue-600 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold">HotelMS</h1>
+            <div class="space-x-4">
+                <button onclick="showTab('dashboard')" class="hover:text-blue-200">Dashboard</button>
+                <button onclick="showTab('queries')" class="hover:text-blue-200">SQL Queries</button>
+            </div>
+        </div>
+    </nav>
+
+    <div id="dashboard" class="container mx-auto p-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-white p-4 rounded-lg shadow">
+                <h3 class="text-lg font-semibold mb-2">Available Rooms</h3>
+                <p class="text-3xl font-bold text-blue-600">12</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow">
+                <h3 class="text-lg font-semibold mb-2">Current Bookings</h3>
+                <p class="text-3xl font-bold text-green-600">8</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow">
+                <h3 class="text-lg font-semibold mb-2">Total Staff</h3>
+                <p class="text-3xl font-bold text-purple-600">25</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow">
+                <h3 class="text-lg font-semibold mb-2">Monthly Revenue</h3>
+                <p class="text-3xl font-bold text-orange-600">$24,500</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="queries" class="container mx-auto p-4 hidden">
+        <div class="bg-white rounded-lg shadow p-4">
+            <h2 class="text-xl font-bold mb-4">SQL Queries</h2>
+            <div class="space-y-4">
+                <div class="border p-4 rounded">
+                    <h3 class="font-semibold">1. Available Rooms</h3>
+                    <pre class="bg-gray-100 p-2 rounded mt-2">SELECT * FROM Rooms WHERE status = 'available';</pre>
+                    <button onclick="executeQuery(1)" class="mt-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Execute</button>
+                    <div id="result1" class="query-result mt-2 hidden"></div>
+                </div>
+                <!-- More query containers would follow the same pattern -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            document.getElementById('dashboard').classList.add('hidden');
+            document.getElementById('queries').classList.add('hidden');
+            document.getElementById(tabName).classList.remove('hidden');
+        }
+
+        function executeQuery(queryId) {
+            const resultDiv = document.getElementById(`result${queryId}`);
+            resultDiv.classList.remove('hidden');
+            
+            // Simulated query results
+            const sampleData = {
+                1: [
+                    { room_number: '101', type: 'Deluxe', price: '$200' },
+                    { room_number: '102', type: 'Suite', price: '$350' },
+                    { room_number: '103', type: 'Standard', price: '$150' }
+                ]
+            };
+
+            let resultHTML = '<table class="w-full text-sm"><tr class="bg-gray-200"><th class="p-2">Room</th><th>Type</th><th>Price</th></tr>';
+            sampleData[queryId].forEach(row => {
+                resultHTML += `<tr class="border-b">
+                    <td class="p-2">${row.room_number}</td>
+                    <td class="p-2">${row.type}</td>
+                    <td class="p-2">${row.price}</td>
+                </tr>`;
+            });
+            resultHTML += '</table>';
+            
+            resultDiv.innerHTML = resultHTML;
+        }
+
+        // Show dashboard by default
+        showTab('dashboard');
+    </script>
+<script>document.body.addEventListener('wheel', e => { if (!e.ctrlKey) return; e.preventDefault(); return }, { passive: false })</script>
+	</body>
+</html>
